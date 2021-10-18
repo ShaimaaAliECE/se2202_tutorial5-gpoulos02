@@ -1,6 +1,8 @@
 let nextPlayer = 'X'; // takes a value of either 'X' or 'O' according to the game turns
 
 //initialize the game
+document.getElementById("next-lbl").innerHTML = nextPlayer;
+
 
 // use the value stored in the nextPlayer variable to indicate who the next player is
 
@@ -11,6 +13,11 @@ createGameBoard()
 function createGameBoard()
 {
     // Programatically add a button with square brackets enclosing an empty space to each cell in the gameboard
+    for(let x of document.getElementsByTagName("td")){
+        let button = document.createElement("button");
+        button.innerHTML = "[ ]";
+        document.getElementById(x.id).appendChild(button);
+    }
    
 }
 
@@ -24,6 +31,16 @@ for (let i=0; i<btns.length; i++)
 // This function will be used to respond to a click event on any of the board buttons.
 function takeCell(event)
 {
+    let y = event.target;
+    y.innerHTML = nextPlayer;
+    if(nextPlayer == "X"){
+        nextPlayer = "O";
+    }
+    else{
+        nextPlayer = "X";
+    }
+    document.getElementById("next-lbl").innerHTML = nextPlayer;
+    y.disabled = true;
     /*
         When the button is clicked, the space inside its square brackets is replaced by the value in the nextPlayer before switching it
     */
@@ -34,6 +51,9 @@ function takeCell(event)
     if (isGameOver())
     {
         // let the lable with the id 'game-over-lbl' display the words 'Game Over' inside <h1> element
+        let gameOver = document.createElement("h1");
+        gameOver.innerHTML = "Game Over";
+        document.getElementById('game-over-lbl').appendChild(gameOver);
     }
 
     // I'll leave declaring the winner for your intrinsic motivation, it's not required for this assignment 
@@ -41,6 +61,19 @@ function takeCell(event)
 
 function isGameOver()
 {
+    let buttonNum = document.querySelectorAll('button');
+    let counter = 0;
+    for (let i = 0; i < buttonNum.length; i++){
+        if(buttonNum[i].disabled == true){
+            counter++;
+        }
+    }
+    if (counter == buttonNum.length){
+        return true;
+    }
+    else{
+        return false;
+    }
     // This function returns true if all the buttons are disabled and false otherwise 
    
 }
